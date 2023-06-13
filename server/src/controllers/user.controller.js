@@ -1,4 +1,4 @@
-const userModel = require("../models/user.model.js");
+const User = require("../models/user.model.js");
 const asyncHandler = require("express-async-handler");
 const { generateToken } = require("../config/jwtToken.js");
 const { validateMongoDbId } = require("../utils/validateMongodbId.js");
@@ -9,10 +9,10 @@ const jwt = require("jsonwebtoken");
 const signup = asyncHandler(async (req, res) => {
   const { firstname, lastname, email, mobile, password } = req.body;
 
-  const checkUser = await userModel.findOne({ email: email });
+  const checkUser = await User.findOne({ email: email });
 
   if (!checkUser) {
-    const user = userModel.create({
+    const user = User.create({
       firstname,
       lastname,
       email,
@@ -30,10 +30,10 @@ const signup = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const checkUser = await userModel.findOne({ email });
+  const checkUser = await User.findOne({ email });
   if (checkUser && (await checkUser.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(checkUser?._id);
-    const updateUser = await userModel.findByIdAndUpdate(
+    const updateUser = await User.findByIdAndUpdate(
       checkUser.id,
       {
         refreshToken: refreshToken,
@@ -63,7 +63,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   if (!cookie?.refreshToken)
     throw new Error("There's no refresh token in cookies.");
   const refreshToken = cookie.refreshToken;
-  const user = await userModel.findOne({ refreshToken });
+  const user = await User.findOne({ refreshToken });
   if (!user) throw new Error("No refresh token matched.");
   jwt.verify(refreshToken, process.env.SECRET, (err, decoded) => {
     if (err || user.id !== decoded.id) {
@@ -80,7 +80,7 @@ const logout = asyncHandler(async (req, res) => {
   if (!cookie?.refreshToken)
     throw new Error("There's no refresh token in cookies.");
   const refreshToken = cookie.refreshToken;
-  const user = await userModel.findOne({ refreshToken });
+  const user = await User.findOne({ refreshToken });
   if (!user) {
     res.clearCookie("refreshToken", {
       httpOnly: true,
@@ -88,7 +88,7 @@ const logout = asyncHandler(async (req, res) => {
     });
     res.sendStatus(204);
   }
-  await userModel.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { refreshToken },
     {
       refreshToken: "",
@@ -106,7 +106,7 @@ const updateUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userUpdated = await userModel.findByIdAndUpdate(
+    const userUpdated = await User.findByIdAndUpdate(
       _id,
       {
         firstname: req?.body?.firstname,
@@ -127,7 +127,7 @@ const updateUser = asyncHandler(async (req, res) => {
 // GET ALL USERS
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
-    const users = await userModel.find();
+    const users = await User.find();
     res.json(users);
   } catch (error) {
     throw new Error(error);
@@ -139,7 +139,7 @@ const getUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const user = await userModel.findById(id);
+    const user = await User.findById(id);
     res.json({
       user,
     });
@@ -153,7 +153,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const user = await userModel.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(id);
     res.json({
       user,
     });
@@ -167,7 +167,7 @@ const blockUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const block = await userModel.findByIdAndUpdate(
+    const block = await User.findByIdAndUpdate(
       id,
       {
         isBlocked: true,
@@ -189,7 +189,7 @@ const unblockUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const unblock = await userModel.findByIdAndUpdate(
+    const unblock = await User.findByIdAndUpdate(
       id,
       {
         isBlocked: false,

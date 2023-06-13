@@ -8,12 +8,14 @@ const {
   errorHandler,
 } = require("./src/middlewares/error.middleware");
 const cookieParser = require("cookie-parser");
+const morgan = require("morgan");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 dbConnect();
 
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

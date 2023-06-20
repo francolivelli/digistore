@@ -28,14 +28,14 @@ const signup = asyncHandler(async (req, res) => {
   }
 });
 
-// LOGIN
+// USER LOGIN
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const checkUser = await User.findOne({ email });
   if (checkUser && (await checkUser.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(checkUser?._id);
-    const updateUser = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       checkUser.id,
       {
         refreshToken: refreshToken,
@@ -53,6 +53,37 @@ const login = asyncHandler(async (req, res) => {
       email: checkUser?.email,
       mobile: checkUser?.mobile,
       token: generateToken(checkUser?._id),
+    });
+  } else {
+    throw new Error("Invalid credentials");
+  }
+});
+
+// ADMIN LOGIN
+const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const checkAdmin = await User.findOne({ email });
+  if (checkAdmin.role !== "admin") throw new Error("Not authorised");
+  if (checkAdmin && (await checkAdmin.isPasswordMatched(password))) {
+    const refreshToken = await generateRefreshToken(checkAdmin?._id);
+    await User.findByIdAndUpdate(
+      checkAdmin.id,
+      {
+        refreshToken: refreshToken,
+      },
+      { new: true }
+    );
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 72 * 60 * 60 * 1000,
+    });
+    res.json({
+      _id: checkAdmin?._id,
+      firstname: checkAdmin?.firstname,
+      lastname: checkAdmin?.lastname,
+      email: checkAdmin?.email,
+      mobile: checkAdmin?.mobile,
+      token: generateToken(checkAdmin?._id),
     });
   } else {
     throw new Error("Invalid credentials");
@@ -261,6 +292,38 @@ const resetPassword = asyncHandler(async (req, res) => {
   res.json(user);
 });
 
+// GET WISHLIST
+const getWishlist = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const findUser = await User.findById(_id).populate("wishlist");
+    res.json(findUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// SAVE USER ADDRESS
+const saveAddress = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const userUpdated = await User.findByIdAndUpdate(
+      _id,
+      {
+        address: req?.body?.address,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(userUpdated);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 module.exports = {
   signup,
   login,
@@ -275,4 +338,7 @@ module.exports = {
   updatePassword,
   forgotPassword,
   resetPassword,
+  loginAdmin,
+  getWishlist,
+  saveAddress,
 };

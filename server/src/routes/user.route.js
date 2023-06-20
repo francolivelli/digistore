@@ -13,6 +13,9 @@ const {
   updatePassword,
   forgotPassword,
   resetPassword,
+  loginAdmin,
+  getWishlist,
+  saveAddress,
 } = require("../controllers/user.controller");
 const { authMiddleware, isAdmin } = require("../middlewares/auth.middleware");
 const router = express.Router();
@@ -20,8 +23,11 @@ const router = express.Router();
 // SIGN UP
 router.post("/signup", signup);
 
-// LOGIN
+// USER LOGIN
 router.post("/login", login);
+
+// ADMIN LOGIN
+router.post("/admin-login", loginAdmin);
 
 // HANDLE REFRESH TOKEN
 router.get("/refresh", handleRefreshToken);
@@ -32,8 +38,14 @@ router.get("/logout", logout);
 // UPDATE USER
 router.put("/", authMiddleware, updateUser);
 
+// SAVE ADDRESS
+router.put("/save-address", authMiddleware, saveAddress);
+
 // GET ALL USERS
 router.get("/", getAllUsers);
+
+// GET WISHLIST
+router.get("/wishlist", authMiddleware, getWishlist);
 
 // GET A SINGLE USER
 router.get("/:id", authMiddleware, isAdmin, getUser);

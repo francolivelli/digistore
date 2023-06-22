@@ -16,6 +16,9 @@ const {
   loginAdmin,
   getWishlist,
   saveAddress,
+  addToCart,
+  getCart,
+  emptyCart,
 } = require("../controllers/user.controller");
 const { authMiddleware, isAdmin } = require("../middlewares/auth.middleware");
 const router = express.Router();
@@ -28,6 +31,9 @@ router.post("/login", login);
 
 // ADMIN LOGIN
 router.post("/admin-login", loginAdmin);
+
+// ADD TO CART
+router.post("/cart", authMiddleware, addToCart);
 
 // HANDLE REFRESH TOKEN
 router.get("/refresh", handleRefreshToken);
@@ -47,8 +53,14 @@ router.get("/", getAllUsers);
 // GET WISHLIST
 router.get("/wishlist", authMiddleware, getWishlist);
 
+// GET CART
+router.get("/cart", authMiddleware, getCart);
+
 // GET A SINGLE USER
 router.get("/:id", authMiddleware, isAdmin, getUser);
+
+// EMPTY CART
+router.delete("/empty-cart", authMiddleware, emptyCart);
 
 // DELETE USER
 router.delete("/:id", deleteUser);

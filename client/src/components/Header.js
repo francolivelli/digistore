@@ -10,7 +10,7 @@ const Header = () => {
           <div className="row">
             <div className="col-6">
               <p className="text-white mb-0">
-                Envío gratis en compras mayores a $10.000 y devoluciones
+                Envío gratis en compras mayores a USD 20 y devoluciones
                 gratuitas
               </p>
             </div>

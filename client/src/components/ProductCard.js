@@ -20,7 +20,7 @@ const ProductCard = () => {
           />
         </div>
         <div className="product-details">
-          <h6 className="brand">Havels</h6>
+          <h6 className="brand">Havells</h6>
           <h5 className="product-title">
             La joya tecnológica que potencia tu estilo.
           </h5>

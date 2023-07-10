@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ReactStars from "react-rating-stars-component";
+import ProductCard from "../components/ProductCard";
 
 const OurStore = () => {
+  const [grid, setGrid] = useState(4);
+
   return (
     <>
       <Meta title={"Nuestra tienda"} />
@@ -215,7 +218,75 @@ const OurStore = () => {
                 </div>
               </div>
             </div>
-            <div className="col-9"></div>
+            <div className="col-9">
+              <div className="filter-sort-grid mb-4">
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center gap-10">
+                    <p
+                      className="mb-0 d-block"
+                      style={{ width: "130px", textJustify: "center" }}>
+                      Ordenar por:
+                    </p>
+                    <select name="" id="" className="form-control form-select">
+                      <option value="manual">Destacados</option>
+                      <option value="best-selling">Más vendidos</option>
+                      <option value="title-ascending">
+                        Alfabéticamente, A-Z
+                      </option>
+                      <option value="title-descending">
+                        Alfabéticamente, Z-A
+                      </option>
+                      <option value="price-ascending">
+                        Precio, ascendente
+                      </option>
+                      <option value="price-descending">
+                        Precio, descendente
+                      </option>
+                      <option value="created-ascending">
+                        Fecha, más antiguo a más nuevo
+                      </option>
+                      <option value="created-descending">
+                        Fecha, más nuevo a más antiguo
+                      </option>
+                    </select>
+                  </div>
+                  <div className="d-flex align-items-center gap-10">
+                    <p className="totalproducts mb-0">21 productos</p>
+                    <div className="d-flex gap-10 align-items-center grid">
+                      <img
+                        onClick={() => setGrid(3)}
+                        src="images/gr4.svg"
+                        alt="grid"
+                        className={`d-block img-fluid ${grid === 3 ? "selected" : ""}`}
+                      />
+                      <img
+                        onClick={() => setGrid(4)}
+                        src="images/gr3.svg"
+                        alt="grid"
+                        className={`d-block img-fluid ${grid === 4 ? "selected" : ""}`}
+                      />
+                      <img
+                        onClick={() => setGrid(6)}
+                        src="images/gr2.svg"
+                        alt="grid"
+                        className={`d-block img-fluid ${grid === 6 ? "selected" : ""}`}
+                      />
+                      <img
+                        onClick={() => setGrid(12)}
+                        src="images/gr.svg"
+                        alt="grid"
+                        className={`d-block img-fluid ${grid === 12 ? "selected" : ""}`}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="products-list pb-5">
+                <div className="d-flex gap-10 flex-wrap">
+                  <ProductCard grid={grid} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

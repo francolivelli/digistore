@@ -202,6 +202,8 @@ const Home = () => {
             <ProductCard />
             <ProductCard />
             <ProductCard />
+            <ProductCard />
+            <ProductCard />
           </div>
         </div>
       </section>
@@ -286,6 +288,8 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Los más buscados</h3>
             </div>
+            <ProductCard />
+            <ProductCard />
             <ProductCard />
             <ProductCard />
             <ProductCard />

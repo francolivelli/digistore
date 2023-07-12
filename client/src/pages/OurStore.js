@@ -3,6 +3,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
+import Color from "../components/Color";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
@@ -103,26 +104,7 @@ const OurStore = () => {
                   </div>
                   <h5 className="sub-title">Colores</h5>
                   <div>
-                    <ul className="colors ps-0 mb-4">
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                      <li></li>
-                    </ul>
+                    <Color />
                   </div>
                   <h5 className="sub-title">Tamaño</h5>
                   <div>
@@ -257,25 +239,33 @@ const OurStore = () => {
                         onClick={() => setGrid(3)}
                         src="images/gr4.svg"
                         alt="grid"
-                        className={`d-block img-fluid ${grid === 3 ? "selected" : ""}`}
+                        className={`d-block img-fluid ${
+                          grid === 3 ? "selected" : ""
+                        }`}
                       />
                       <img
                         onClick={() => setGrid(4)}
                         src="images/gr3.svg"
                         alt="grid"
-                        className={`d-block img-fluid ${grid === 4 ? "selected" : ""}`}
+                        className={`d-block img-fluid ${
+                          grid === 4 ? "selected" : ""
+                        }`}
                       />
                       <img
                         onClick={() => setGrid(6)}
                         src="images/gr2.svg"
                         alt="grid"
-                        className={`d-block img-fluid ${grid === 6 ? "selected" : ""}`}
+                        className={`d-block img-fluid ${
+                          grid === 6 ? "selected" : ""
+                        }`}
                       />
                       <img
                         onClick={() => setGrid(12)}
                         src="images/gr.svg"
                         alt="grid"
-                        className={`d-block img-fluid ${grid === 12 ? "selected" : ""}`}
+                        className={`d-block img-fluid ${
+                          grid === 12 ? "selected" : ""
+                        }`}
                       />
                     </div>
                   </div>

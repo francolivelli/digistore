@@ -2,7 +2,7 @@ import React from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 
-const TermsAndCondition = () => {
+const TermsAndConditions = () => {
   return (
     <>
       <Meta title={"Términos y condiciones"} />
@@ -20,4 +20,4 @@ const TermsAndCondition = () => {
   );
 };
 
-export default TermsAndCondition;
+export default TermsAndConditions;

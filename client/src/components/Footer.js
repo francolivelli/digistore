@@ -48,9 +48,9 @@ const Footer = () => {
                   +54 1100000000
                 </a>
                 <a
-                  href="mailto:digitic@digitic.com"
+                  href="mailto:digistore@digistore.com"
                   className="mt-2 d-block mb-0 text-white">
-                  digitic@digitic.com
+                  digistore@digistore.com
                 </a>
                 <div className="social-icons d-flex align-items-center gap-30 mt-4">
                   <a
@@ -129,7 +129,7 @@ const Footer = () => {
           <div className="row">
             <div className="col-12">
               <p className="text-center mb-0 text-white">
-                &copy; {new Date().getFullYear()}; Powered by Digitic
+                &copy; {new Date().getFullYear()}; Powered by Digistore
               </p>
             </div>
           </div>

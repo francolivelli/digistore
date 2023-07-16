@@ -20,6 +20,7 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
               element={<TermsAndConditions />}
             />
           </Route>
+          <Route path="checkout" element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </>

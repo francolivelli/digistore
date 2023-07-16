@@ -879,3 +879,37 @@ footer .input-group-text {
 }
 
 /* Cart Page Ends Here */
+
+/* Checkout Page */
+
+.checkout-wrapper {
+  height: 100vh;
+}
+
+.checkout-wrapper .container-xxl {
+  height: 100%;
+}
+
+.checkout-wrapper .container-xxl .row {
+  height: 100%;
+}
+
+.checkout-wrapper .container-xxl .row .col-7 {
+  height: 100%;
+}
+
+/* Checkout Page Ends Here */
+
+/* Shipping Page */
+
+.total {
+  font-size: 14px;
+  color: var(--color-1c1c1b);
+}
+
+.total-price {
+  font-size: 16px;
+  color: var(--color-777777);
+}
+
+/* Shipping Page Ends Here */

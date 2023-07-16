@@ -12,7 +12,7 @@ const OurStore = () => {
     <>
       <Meta title={"Nuestra tienda"} />
       <BreadCrumb title="Nuestra tienda" />
-      <div className="store-wrapper home-wrapper-2 py-5">
+      <div className="store-wrapper home-wrapper-2 py-5 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-3">

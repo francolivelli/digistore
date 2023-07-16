@@ -9,7 +9,7 @@ const Contact = () => {
     <>
       <Meta title={"Contacto"} />
       <BreadCrumb title="Contacto" />
-      <div className="contact-wrapper py-5 home-wrapper-2">
+      <div className="contact-wrapper home-wrapper-2 py-5 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">

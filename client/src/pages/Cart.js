@@ -10,7 +10,7 @@ const Cart = () => {
     <>
       <Meta title={"Carrito"} />
       <BreadCrumb title="Carrito" />
-      <section className="cart-wrapper home-wrapper-2 py-5">
+      <section className="cart-wrapper home-wrapper-2 py-5 px-4">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">

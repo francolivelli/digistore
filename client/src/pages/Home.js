@@ -8,7 +8,7 @@ import SpecialProduct from "../components/SpecialProduct";
 const Home = () => {
   return (
     <>
-      <section className="home-wrapper-1 py-5">
+      <section className="home-wrapper-1 py-5 px-3">
         <div className="container-xxl">
           <div className="row align-items-center">
             <div className="col-6">
@@ -126,7 +126,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="home-wrapper-2">
+      <section className="home-wrapper-2 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
@@ -192,7 +192,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="featured-wrapper home-wrapper-2 py-5">
+      <section className="featured-wrapper home-wrapper-2 py-5 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
@@ -207,7 +207,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="famous-wrapper home-wrapper-2 py-5">
+      <section className="famous-wrapper home-wrapper-2 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-3">
@@ -269,7 +269,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="special-wrapper home-wrapper-2 py-5">
+      <section className="special-wrapper home-wrapper-2 py-5 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
@@ -282,7 +282,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="popular-wrapper home-wrapper-2 py-5">
+      <section className="popular-wrapper home-wrapper-2 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
@@ -297,7 +297,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="marquee-wrapper home-wrapper-2 py-2">
+      <section className="marquee-wrapper home-wrapper-2 py-5">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
@@ -333,7 +333,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="blog-wrapper home-wrapper-2 py-5">
+      <section className="blog-wrapper home-wrapper-2 pb-5 px-3">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">

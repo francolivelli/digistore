@@ -1,6 +1,12 @@
 import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
+import prodcompare from "../images/prodcompare.svg";
+import wish from "../images/wish.svg";
+import watch from "../images/watch.jpg";
+import watch2 from "../images/watch-1.avif";
+import addcart from "../images/add-cart.svg";
+import view from "../images/view.svg";
 
 const ProductCard = (props) => {
   const { grid } = props;
@@ -15,17 +21,17 @@ const ProductCard = (props) => {
         <Link to="/product/:id" className="product-card position-relative">
           <div className="wishlist-icon position-absolute">
             <Link>
-              <img src="images/wish.svg" alt="wishlist" />
+              <img src={wish} alt="wishlist" />
             </Link>
           </div>
           <div className="product-image">
             <img
-              src="images/watch.jpg"
+              src={watch}
               clasclassName="img-fluid"
               alt="product"
             />
             <img
-              src="images/watch-1.avif"
+              src={watch2}
               clasclassName="img-fluid"
               alt="product"
             />
@@ -42,21 +48,22 @@ const ProductCard = (props) => {
               size={24}
               activeColor="#ffd700"
             />
-            <p className={`description ${grid===12 ? "d-block" : "d-none"}`}>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, cum laborum illum enim inventore necessitatibus?
+            <p className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+              Cupiditate, cum laborum illum enim inventore necessitatibus?
             </p>
             <p className="price">USD 100</p>
           </div>
           <div className="action-bar position-absolute">
             <div className="d-flex flex-column gap-15">
               <Link>
-                <img src="images/prodcompare.svg" alt="compare" />
+                <img src={prodcompare} alt="compare" />
               </Link>
               <Link>
-                <img src="images/view.svg" alt="view" />
+                <img src={view} alt="view" />
               </Link>
               <Link>
-                <img src="images/add-cart.svg" alt="addcart" />
+                <img src={addcart} alt="addcart" />
               </Link>
             </div>
           </div>

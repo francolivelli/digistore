@@ -1,4 +1,5 @@
 import React from "react";
+import Meta from "../components/Meta";
 import { Link } from "react-router-dom";
 import Marquee from "react-fast-marquee";
 import BlogCard from "../components/BlogCard";
@@ -10,6 +11,7 @@ import { services } from "../utils/Data";
 const Home = () => {
   return (
     <>
+      <Meta title={"Digistore"} />
       <Container class1="home-wrapper-1 py-5 px-3">
         <div className="row align-items-center">
           <div className="col-6">

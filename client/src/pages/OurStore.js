@@ -210,7 +210,7 @@ const OurStore = () => {
                     Ordenar por:
                   </p>
                   <select name="" id="" className="form-control form-select">
-                    <option value="manual">Destacados</option>
+                    <option value="featured">Destacados</option>
                     <option value="best-selling">Más vendidos</option>
                     <option value="title-ascending">
                       Alfabéticamente, A-Z

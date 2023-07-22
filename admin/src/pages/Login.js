@@ -20,6 +20,9 @@ const Login = () => {
         <form action="">
           <CustomInput type="text" label="Email" i_id="email" />
           <CustomInput type="password" label="Contraseña" i_id="pass" />
+          <div className="mb-3 text-end" style={{fontSize:"14px"}}>
+            <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+          </div>
           <Link
             to="/admin"
             className="border-0 px-3 py-2 text-white w-100 text-center text-decoration-none fs-6 rounded"

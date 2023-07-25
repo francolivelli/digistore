@@ -12,6 +12,7 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { ImBlog } from "react-icons/im";
 import { TbMessage2Question } from "react-icons/tb";
+import { IoIosNotifications } from "react-icons/io";
 import { useNavigate, Outlet } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
@@ -27,7 +28,7 @@ const MainLayout = () => {
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
-          <h2 className="text-white fs-5 text-center py-3">
+          <h2 className="text-white fs-5 text-center pt-4">
             <span className="sm-logo">D</span>
             <span className="lg-logo">Digistore</span>
           </h2>
@@ -142,6 +143,7 @@ const MainLayout = () => {
       </Sider>
       <Layout>
         <Header
+          className="d-flex justify-content-between pe-5"
           style={{
             padding: 0,
             background: colorBgContainer,
@@ -156,6 +158,26 @@ const MainLayout = () => {
               height: 64,
             }}
           />
+          <div className="d-flex gap-4 align-items-center">
+            <div className="position-relative">
+              <IoIosNotifications className="fs-4" />
+              <span className="badge bg-warning rounded-circle p-1 position-absolute">
+                3
+              </span>
+            </div>
+            <div className="d-flex gap-3 align-items-center">
+              <img
+                src="https://pm1.aminoapps.com/7599/6a3c625b9cd250ebc946ef2e3a7755c0aa0c2775r1-1200-1200v2_hq.jpg"
+                alt=""
+                width={40}
+                height={40}
+              />
+            </div>
+            <div>
+              <h5 className="mb-0">Admin</h5>
+              <p className="mb-0">digistore@digistore.com</p>
+            </div>
+          </div>
         </Header>
         <Content
           style={{

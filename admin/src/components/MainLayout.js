@@ -62,7 +62,7 @@ const MainLayout = () => {
                 {
                   key: "product",
                   icon: <AiOutlineShoppingCart className="fs-4" />,
-                  label: "Productos",
+                  label: "Agregar productos",
                 },
                 {
                   key: "product-list",
@@ -72,7 +72,7 @@ const MainLayout = () => {
                 {
                   key: "brand",
                   icon: <SiBrandfolder className="fs-4" />,
-                  label: "Marcas",
+                  label: "Agregar marcas",
                 },
                 {
                   key: "brand-list",
@@ -82,7 +82,7 @@ const MainLayout = () => {
                 {
                   key: "category",
                   icon: <BiCategoryAlt className="fs-4" />,
-                  label: "Categorías",
+                  label: "Crear categorías",
                 },
                 {
                   key: "category-list",
@@ -92,7 +92,7 @@ const MainLayout = () => {
                 {
                   key: "color",
                   icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Colores",
+                  label: "Agregar colores",
                 },
                 {
                   key: "color-list",
@@ -161,7 +161,7 @@ const MainLayout = () => {
           <div className="d-flex gap-4 align-items-center">
             <div className="position-relative">
               <IoIosNotifications className="fs-4" />
-              <span className="badge bg-warning rounded-circle p-1 position-absolute">
+              <span className="badge bg-danger rounded-circle p-1 position-absolute">
                 3
               </span>
             </div>

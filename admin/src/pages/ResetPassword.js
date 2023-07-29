@@ -12,7 +12,7 @@ const ResetPassword = () => {
         alignItems: "center",
       }}>
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4">
-        <h4 className="text-center" >Cambiar contraseña</h4>
+        <h4 className="text-center title" >Cambiar contraseña</h4>
         <p className="text-center" style={{ fontSize: "15px" }} >Por favor, ingresá tu nueva contraseña.</p>
         <form action="">
           <CustomInput type="password" label="Nueva contraseña" i_id="pass" />

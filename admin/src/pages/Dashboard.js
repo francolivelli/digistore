@@ -114,53 +114,53 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h3 className="mb-4">Dashboard</h3>
+      <h3 className="mb-4 title">Dashboard</h3>
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p>
-            <h5 className="mb-0">USD 1100</h5>
+            <p className="desc">Total</p>
+            <h5 className="mb-0 sub-title">USD 1100</h5>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6>
               <BsArrowDownRight /> 32%
             </h6>
-            <p className="mb-0">Comparar con Abril 2022</p>
+            <p className="mb-0 desc">Comparado con Abril 2022</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p>
-            <h5 className="mb-0">USD 1100</h5>
+            <p className="desc">Total</p>
+            <h5 className="mb-0 sub-title">USD 1100</h5>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="red">
               <BsArrowDownRight /> 32%
             </h6>
-            <p className="mb-0">Comparar con Abril 2022</p>
+            <p className="mb-0  desc">Comparado con Abril 2022</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="">Total</p>
-            <h5 className="mb-0">USD 1100</h5>
+            <p className="desc">Total</p>
+            <h5 className="mb-0 sub-title">USD 1100</h5>
           </div>
           <div className="d-flex flex-column align-items-end">
             <h6 className="green">
               <BsArrowDownRight /> 32%
             </h6>
-            <p className="mb-0">Comparar con Abril 2022</p>
+            <p className="mb-0  desc">Comparado con Abril 2022</p>
           </div>
         </div>
       </div>
       <div className="mt-5">
-        <h3 className="mb-4">Estadísticas de ingresos</h3>
+        <h3 className="mb-4 title">Estadísticas de ingresos</h3>
         <div>
           <Column {...config} />
         </div>
       </div>
       <div className="mt-5">
-        <h3 className="mb-4">Órdenes recientes</h3>
+        <h3 className="mb-4 title">Órdenes recientes</h3>
         <div>
           <Table columns={columns} dataSource={data1} />
         </div>

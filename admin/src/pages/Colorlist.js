@@ -32,7 +32,7 @@ const columns = [
 const Colorlist = () => {
     return (
         <div>
-          <h3 className="mb-4">Colores</h3>
+          <h3 className="mb-4 title">Colores</h3>
           <div>
             <Table columns={columns} dataSource={data1} />
           </div>

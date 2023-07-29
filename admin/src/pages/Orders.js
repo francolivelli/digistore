@@ -32,7 +32,7 @@ const columns = [
 const Orders = () => {
     return (
         <div>
-          <h3 className="mb-4">Órdenes</h3>
+          <h3 className="mb-4 title">Órdenes</h3>
           <div>
             <Table columns={columns} dataSource={data1} />
           </div>

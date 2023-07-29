@@ -13,7 +13,7 @@ import { FaClipboardList, FaBloggerB } from "react-icons/fa";
 import { ImBlog } from "react-icons/im";
 import { TbMessage2Question } from "react-icons/tb";
 import { IoIosNotifications } from "react-icons/io";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, Link } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
@@ -165,17 +165,41 @@ const MainLayout = () => {
                 3
               </span>
             </div>
-            <div className="d-flex gap-3 align-items-center">
-              <img
-                src="https://pm1.aminoapps.com/7599/6a3c625b9cd250ebc946ef2e3a7755c0aa0c2775r1-1200-1200v2_hq.jpg"
-                alt=""
-                width={40}
-                height={40}
-              />
-            </div>
-            <div>
-              <h5 className="mb-0">Admin</h5>
-              <p className="mb-0">digistore@digistore.com</p>
+            <div className="d-flex gap-3 align-items-center dropdown">
+              <div>
+                <img
+                  src="https://pm1.aminoapps.com/7599/6a3c625b9cd250ebc946ef2e3a7755c0aa0c2775r1-1200-1200v2_hq.jpg"
+                  alt=""
+                  width={40}
+                  height={40}
+                />
+              </div>
+              <div
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <h5 className="mb-0">Admin</h5>
+                <p className="mb-0">digistore@digistore.com</p>
+              </div>
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li>
+                  <Link
+                    className="dropdown-item py-1 mb-1"
+                    style={{ height: "auto", lineHeight: "20px" }}
+                    to="/">
+                    Ver perfil
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="dropdown-item py-1 mb-1"
+                    style={{ height: "auto", lineHeight: "20px" }}
+                    to="/">
+                    Cerrar sesión
+                  </Link>
+                </li>
+              </div>
             </div>
           </div>
         </Header>

@@ -13,7 +13,7 @@ const Login = () => {
         alignItems: "center",
       }}>
       <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4">
-        <h4 className="text-center">Iniciar sesión</h4>
+        <h4 className="text-center title">Iniciar sesión</h4>
         <p className="text-center" style={{ fontSize: "15px" }}>
           Iniciá sesión para continuar.
         </p>

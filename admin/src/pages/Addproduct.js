@@ -45,7 +45,6 @@ const Addproduct = () => {
               onChange={(e) => handleDesc(e)}
             />
           </div>
-          <CustomInput type="number" label="Precio" />
           <select name="" className="form-control py-3 mb-3" id="">
             <option value="">Seleccionar marca</option>
           </select>
@@ -61,7 +60,7 @@ const Addproduct = () => {
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">
-              Haz clic o arrastra el archivo a esta área para cargarlo
+              Hacé clic o arrastrá el archivo a esta área para cargarlo
             </p>
             <p className="ant-upload-hint">
               Compatible con una carga única o masiva. Está estrictamente

@@ -42,7 +42,7 @@ const Addblog = () => {
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">
-              Haz clic o arrastra el archivo a esta área para cargarlo
+              Hacé clic o arrastrá el archivo a esta área para cargarlo
             </p>
             <p className="ant-upload-hint">
               Compatible con una carga única o masiva. Está estrictamente

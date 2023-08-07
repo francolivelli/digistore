@@ -29,17 +29,17 @@ const Login = () => {
     },
   });
 
-  const { user, isLoaging, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
+  const authState = useSelector((state) => state);
+
+  const { user, isError, isSuccess, isLoading, message } = authState.auth;
 
   useEffect(() => {
-    if (!user === null || isSuccess) {
+    if (isSuccess) {
       navigate("admin");
     } else {
-      alert("")
+      navigate("");
     }
-  }, [user, isLoaging, isError, isSuccess, message]);
+  }, [user, isError, isSuccess, isLoading, navigate]);
 
   return (
     <div
@@ -55,6 +55,9 @@ const Login = () => {
         <p className="text-center" style={{ fontSize: "15px" }}>
           Iniciá sesión para continuar.
         </p>
+        <div className="error text-center">
+          {message.message === "Rejected" ? "No sos administrador." : ""}
+        </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
             type="text"

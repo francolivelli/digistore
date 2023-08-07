@@ -1,43 +1,57 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsers } from "../features/customers/customerSlice";
 
 const columns = [
-    {
-      title: "#",
-      dataIndex: "key",
-    },
-    {
-      title: "Nombre",
-      dataIndex: "name",
-    },
-    {
-      title: "Producto",
-      dataIndex: "product",
-    },
-    {
-      title: "Estado",
-      dataIndex: "status",
-    },
-  ];
-  const data1 = [];
-  for (let i = 0; i < 46; i++) {
-    data1.push({
-      key: i,
-      name: `Edward King ${i}`,
-      product: 32,
-      status: `London, Park Lane no. ${i}`,
-    });
-  }
+  {
+    title: "#",
+    dataIndex: "key",
+  },
+  {
+    title: "Nombre",
+    dataIndex: "name",
+    sorter: (a, b) => a.name.localeCompare(b.name),
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+  },
+  {
+    title: "Teléfono",
+    dataIndex: "mobile",
+  },
+];
 
 const Customers = () => {
-    return (
-        <div>
-          <h3 className="mb-4 title">Clientes</h3>
-          <div>
-            <Table columns={columns} dataSource={data1} />
-          </div>
-        </div>
-      );
-}
+  const dispatch = useDispatch();
 
-export default Customers
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
+
+  const state = useSelector((state) => state.customer.customers);
+
+  const data = [];
+  for (let i = 0; i < state.length; i++) {
+    if (state[i].role !== "admin") {
+      data.push({
+        key: i + 1,
+        name: `${state[i].firstname} ${state[i].lastname}`,
+        email: state[i].email,
+        mobile: state[i].mobile,
+      });
+    }
+  }
+
+  return (
+    <div>
+      <h3 className="mb-4 title">Clientes</h3>
+      <div>
+        <Table columns={columns} dataSource={data} />
+      </div>
+    </div>
+  );
+};
+
+export default Customers;

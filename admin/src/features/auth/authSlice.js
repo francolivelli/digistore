@@ -7,17 +7,26 @@ const getUserFromLocalStorage = localStorage.getItem("user")
 
 const initialState = {
   user: getUserFromLocalStorage,
+  orders: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
 
-export const login = createAsyncThunk(
-  `auth/login`,
-  async (user, thunkAPI) => {
+export const login = createAsyncThunk(`auth/login`, async (user, thunkAPI) => {
+  try {
+    return await authService.login(user);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const getOrders = createAsyncThunk(
+  `order/get-orders`,
+  async (thunkAPI) => {
     try {
-      return await authService.login(user);
+      return await authService.getOrders();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -35,6 +44,7 @@ export const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isError = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
@@ -42,7 +52,22 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.user = null;
+        state.message = action.error;
+      })
+      .addCase(getOrders.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.orders = action.payload;
+      })
+      .addCase(getOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
       });
   },
 });

@@ -23,6 +23,7 @@ const {
   createOrder,
   getOrders,
   updateOrderStatus,
+  getAllOrders,
 } = require("../controllers/user.controller");
 const { authMiddleware, isAdmin } = require("../middlewares/auth.middleware");
 const router = express.Router();
@@ -68,6 +69,9 @@ router.get("/cart", authMiddleware, getCart);
 
 // GET ORDERS
 router.get("/get-orders", authMiddleware, getOrders);
+
+// GET ALL ORDERS
+router.get("/get-all-orders", authMiddleware, isAdmin, getAllOrders);
 
 // UPDATE ORDER STATUS
 router.put("/order/:id", authMiddleware, isAdmin, updateOrderStatus);

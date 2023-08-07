@@ -3,7 +3,6 @@ import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "../features/pcategories/pcategorySlice";
 import { Link } from "react-router-dom";
 import { getBlogs } from "../features/blogs/blogSlice";
 

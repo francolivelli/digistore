@@ -10,6 +10,7 @@ const brands = require("./brand.route.js");
 const coupons = require("./coupon.route.js");
 const colors = require("./color.route.js");
 const enquiries = require("./enq.route.js");
+const upload = require("./upload.route.js");
 
 router.use("/users", users);
 router.use("/products", products);
@@ -20,5 +21,6 @@ router.use("/brands", brands);
 router.use("/coupons", coupons);
 router.use("/colors", colors);
 router.use("/enquiries", enquiries);
+router.use("/upload", upload);
 
 module.exports = router;

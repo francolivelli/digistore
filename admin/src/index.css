@@ -76,6 +76,15 @@ main::-webkit-scrollbar {
 .error {
   color: red;
   font-size: 12px;
-  margin-top: 5px;
+  margin-top: 4px;
+  margin-bottom: 2px;
   margin-left: 15px;
+}
+
+.searchBox::placeholder {
+  color: var(--color-212529);
+}
+
+.input-top{
+  margin-top: -13px;
 }

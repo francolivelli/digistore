@@ -8,10 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBrands } from "../features/brands/brandSlice";
 import { getCategories } from "../features/pcategories/pcategorySlice";
 import { getColors } from "../features/colors/colorSlice";
-import Multiselect from "multiselect-react-dropdown";
+import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProducts } from "../features/products/productSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá un nombre para el producto"),
@@ -19,6 +21,7 @@ let schema = Yup.object().shape({
   price: Yup.number().required("Ingresá un precio"),
   brand: Yup.string().required("Ingresá una marca"),
   category: Yup.string().required("Ingresá una categoría"),
+  tags: Yup.string().required("Ingresá una etiqueta"),
   color: Yup.array()
     .min(1, "Ingresá al menos un color")
     .required("Ingresá un color"),
@@ -27,6 +30,8 @@ let schema = Yup.object().shape({
 
 const Addproduct = () => {
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const [color, setColor] = useState([]);
 
@@ -41,12 +46,27 @@ const Addproduct = () => {
   const categoryState = useSelector((state) => state.pCategory.pCategories);
   const colorState = useSelector((state) => state.color.colors);
   const imgState = useSelector((state) => state.upload.images);
+  const newProduct = useSelector((state) => state.product);
 
-  const colors = [];
+  const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+
+  useEffect(() => {
+    if(isSuccess && createdProduct){
+      toast.success("¡Producto agregado!");
+    }
+    if(isError){
+      toast.error("Algo salió mal");
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  const coloropt = [];
   const img = [];
 
   colorState.forEach((i) => {
-    colors.push(i.title);
+    coloropt.push({
+      label: i.title,
+      value: i._id,
+    });
   });
 
   imgState.forEach((i) => {
@@ -60,21 +80,31 @@ const Addproduct = () => {
       price: "",
       brand: "",
       category: "",
+      tags: "",
       color: "",
       quantity: "",
       images: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createProducts(values))
+      dispatch(createProducts(values));
+      formik.resetForm();
+      setColor(null);
+      setTimeout(() => {
+        navigate("/admin/product-list");
+      }, 3000);
     },
   });
 
   useEffect(() => {
-    formik.values.color = color;
+    formik.values.color = color ? color : " ";
     formik.values.images = img;
     // eslint-disable-next-line
   }, [color, img]);
+
+  const handleColors = (e) => {
+    setColor(e);
+  };
 
   return (
     <div>
@@ -125,6 +155,7 @@ const Addproduct = () => {
               onBlur={formik.handleBlur("brand")}
               value={formik.values.brand}
               className="form-control py-3"
+              style={{ paddingLeft: "0.75rem" }}
               id="">
               <option value="">Seleccionar marca</option>
               {brandState.map((i, j) => {
@@ -145,6 +176,7 @@ const Addproduct = () => {
             onBlur={formik.handleBlur("category")}
             value={formik.values.category}
             className="form-control py-3"
+            style={{ paddingLeft: "0.75rem" }}
             id="">
             <option value="">Seleccionar categoría</option>
             {categoryState.map((i, j) => {
@@ -158,17 +190,33 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.category && formik.errors.category}
           </div>
-          <Multiselect
-            className="form-control multiselect"
-            placeholder="Seleccionar color/colores"
-            isObject={false}
-            options={colors}
-            emptyRecordMsg="No hay más opciones disponibles"
-            onSelect={(e) => setColor(e)}
-            onRemove={(e) => setColor(e)}
-            style={{
-              searchBox: { border: "none", paddingLeft: 0, fontColor: "black" },
-            }}
+          <select
+            name="tags"
+            onChange={formik.handleChange("tags")}
+            onBlur={formik.handleBlur("tags")}
+            value={formik.values.tags}
+            className="form-control py-3"
+            style={{ paddingLeft: "0.75rem" }}
+            id="">
+            <option value="" disabled>
+              Seleccionar categoría
+            </option>
+            <option value="destacado">Destacado</option>
+            <option value="popular">Popular</option>
+            <option value="especial">Especial</option>
+          </select>
+          <div className="error">
+            {formik.touched.tags && formik.errors.tags}
+          </div>
+          <Select
+            mode="multiple"
+            allowClear
+            className="w-100 form-control py-3"
+            placeholder="Seleccionar colores"
+            defaultValue={color}
+            onChange={(i) => handleColors(i)}
+            options={coloropt}
+            showSearch={false}
           />
           <div className="error">
             {formik.touched.color && formik.errors.color}

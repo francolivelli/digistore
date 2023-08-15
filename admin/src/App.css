@@ -27,6 +27,7 @@
 .form-control {
   box-shadow: none;
   border-color: #c3d4da;
+  padding: 0;
 }
 
 .title {

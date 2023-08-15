@@ -81,10 +81,35 @@ main::-webkit-scrollbar {
   margin-left: 15px;
 }
 
-.searchBox::placeholder {
-  color: var(--color-212529);
+.ant-select{
+  cursor: default
 }
 
-.input-top{
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border: none;
+}
+
+.ant-select .ant-select-selection-placeholder {
+  color: var(--color-212529);
+  opacity: 1 !important;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.ant-select-multiple .ant-select-selector {
+  padding: 0;
+}
+
+.ant-select-focused:where(.css-dev-only-do-not-override-1m62vyb).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector{
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.ant-select-multiple .ant-select-selection-item{
+margin-inline-start: 12px;
+margin-inline-end: 0;
+}
+
+.input-top {
   margin-top: -13px;
 }

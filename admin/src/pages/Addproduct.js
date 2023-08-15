@@ -57,7 +57,7 @@ const Addproduct = () => {
     if(isError){
       toast.error("Algo salió mal");
     }
-  }, [isSuccess, isError, isLoading]);
+  }, [isSuccess, isError, isLoading, createdProduct]);
 
   const coloropt = [];
   const img = [];

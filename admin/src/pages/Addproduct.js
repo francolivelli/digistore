@@ -11,7 +11,7 @@ import { getColors } from "../features/colors/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProducts } from "../features/products/productSlice";
+import { createProduct } from "../features/products/productSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -51,10 +51,10 @@ const Addproduct = () => {
   const { isSuccess, isError, isLoading, createdProduct } = newProduct;
 
   useEffect(() => {
-    if(isSuccess && createdProduct){
+    if (isSuccess && createdProduct) {
       toast.success("¡Producto agregado!");
     }
-    if(isError){
+    if (isError) {
       toast.error("Algo salió mal");
     }
   }, [isSuccess, isError, isLoading, createdProduct]);
@@ -87,7 +87,7 @@ const Addproduct = () => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createProducts(values));
+      dispatch(createProduct(values));
       formik.resetForm();
       setColor(null);
       setTimeout(() => {
@@ -265,7 +265,8 @@ const Addproduct = () => {
           </div>
           <button
             type="sumit"
-            className="btn btn-success border-0 rounded-3 my-4">
+            className="btn btn-success border-0 rounded-3 my-4"
+            style={{ width: "fit-content" }}>
             Agregar producto
           </button>
         </form>

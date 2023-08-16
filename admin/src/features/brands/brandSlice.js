@@ -13,7 +13,7 @@ export const getBrands = createAsyncThunk(
 );
 
 export const createBrand = createAsyncThunk(
-  "brand/create-brands",
+  "brand/create-brand",
   async (brandData, thunkAPI) => {
     try {
       return await brandService.createBrand(brandData);

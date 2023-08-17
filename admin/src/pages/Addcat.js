@@ -22,7 +22,7 @@ const Addcat = () => {
 
   useEffect(() => {
     if (isSuccess && createdCategory) {
-      toast.success("¡Marca agregada!");
+      toast.success("¡Categoría agregada!");
     }
     if (isError) {
       toast.error("Algo salió mal");

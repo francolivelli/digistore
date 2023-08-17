@@ -63,7 +63,7 @@ const Addblogcat = () => {
             {formik.touched.title && formik.errors.title}
           </div>
           <button
-            type="sumit"
+            type="submit"
             className="btn btn-success border-0 rounded-3 my-4"
             style={{ width: "fit-content" }}>
             Crear categoría

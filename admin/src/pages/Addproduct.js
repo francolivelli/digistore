@@ -249,7 +249,7 @@ const Addproduct = () => {
               )}
             </Dropzone>
           </div>
-          <div className="show-images d-flex flex-wrap gap-3">
+          <div className="show-images d-flex flex-wrap mt-3 gap-3">
             {imgState?.map((i, j) => {
               return (
                 <div className="position-relative" key={j}>
@@ -264,7 +264,7 @@ const Addproduct = () => {
             })}
           </div>
           <button
-            type="sumit"
+            type="submit"
             className="btn btn-success border-0 rounded-3 my-4"
             style={{ width: "fit-content" }}>
             Agregar producto

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -16,8 +15,6 @@ let schema = Yup.object().shape({
 
 const Addcat = () => {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const newCat = useSelector((state) => state.pCategory);
 
@@ -42,7 +39,6 @@ const Addcat = () => {
       formik.resetForm();
       setTimeout(() => {
         dispatch(resetState());
-        navigate("/admin/category-list");
       }, 3000);
     },
   });

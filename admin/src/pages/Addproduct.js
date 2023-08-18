@@ -12,7 +12,6 @@ import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { createProduct, resetState } from "../features/products/productSlice";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
@@ -30,8 +29,6 @@ let schema = Yup.object().shape({
 
 const Addproduct = () => {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const [color, setColor] = useState([]);
 
@@ -92,7 +89,6 @@ const Addproduct = () => {
       setColor(null);
       setTimeout(() => {
         dispatch(resetState())
-        navigate("/admin/product-list");
       }, 3000);
     },
   });

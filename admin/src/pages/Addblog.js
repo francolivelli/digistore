@@ -7,7 +7,6 @@ import { delImg, uploadImg } from "../features/upload/uploadSlice";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getBlogCategories } from "../features/bcategories/bcategorySlice";
 import { createBlog, resetState } from "../features/blogs/blogSlice";
@@ -20,8 +19,6 @@ let schema = Yup.object().shape({
 
 const Addblog = () => {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getBlogCategories());
@@ -62,7 +59,6 @@ const Addblog = () => {
       formik.resetForm();
       setTimeout(() => {
         dispatch(resetState())
-        navigate("/admin/blog-list");
       }, 3000);
     },
   });

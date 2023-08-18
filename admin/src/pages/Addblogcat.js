@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -13,8 +12,6 @@ let schema = Yup.object().shape({
 
 const Addblogcat = () => {
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const newCat = useSelector((state) => state.bCategory);
 
@@ -39,7 +36,6 @@ const Addblogcat = () => {
       formik.resetForm();
       setTimeout(() => {
         dispatch(resetState())
-        navigate("/admin/blog-category-list");
       }, 3000);
     },
   });

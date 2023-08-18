@@ -9,6 +9,7 @@ import bCategoryReducer from "../features/bcategories/bcategorySlice";
 import colorReducer from "../features/colors/colorSlice";
 import enquiryReducer from "../features/enquiries/enquirySlice";
 import uploadReducer from "../features/upload/uploadSlice";
+import couponReducer from "../features/coupons/couponSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     color: colorReducer,
     enquiry: enquiryReducer,
     upload: uploadReducer,
+    coupon: couponReducer,
   },
 });

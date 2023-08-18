@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getBlogCategories } from "../features/bcategories/bcategorySlice";
-import { createBlog } from "../features/blogs/blogSlice";
+import { createBlog, resetState } from "../features/blogs/blogSlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá un título para el blog"),
@@ -61,6 +61,7 @@ const Addblog = () => {
       dispatch(createBlog(values));
       formik.resetForm();
       setTimeout(() => {
+        dispatch(resetState())
         navigate("/admin/blog-list");
       }, 3000);
     },

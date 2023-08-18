@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { createCategory } from "../features/pcategories/pcategorySlice";
+import {
+  createCategory,
+  resetState,
+} from "../features/pcategories/pcategorySlice";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá el nombre de la categoría"),
@@ -38,6 +41,7 @@ const Addcat = () => {
       dispatch(createCategory(values));
       formik.resetForm();
       setTimeout(() => {
+        dispatch(resetState());
         navigate("/admin/category-list");
       }, 3000);
     },

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import pCategoryService from "./pcategoryService";
 import categoryService from "./pcategoryService";
 
@@ -23,6 +23,8 @@ export const createCategory = createAsyncThunk(
     }
   }
 );
+
+export const resetState = createAction("reset-all");
 
 const initialState = {
   pCategories: [],
@@ -67,7 +69,8 @@ const pCategorySlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

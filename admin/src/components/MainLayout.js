@@ -64,7 +64,7 @@ const MainLayout = () => {
               children: [
                 {
                   key: "product",
-                  icon: <AiOutlineShoppingCart className="fs-4" />,
+                  icon: <ImBlog className="fs-4" />,
                   label: "Agregar productos",
                 },
                 {
@@ -74,7 +74,7 @@ const MainLayout = () => {
                 },
                 {
                   key: "brand",
-                  icon: <SiBrandfolder className="fs-4" />,
+                  icon: <ImBlog className="fs-4" />,
                   label: "Agregar marcas",
                 },
                 {
@@ -84,7 +84,7 @@ const MainLayout = () => {
                 },
                 {
                   key: "category",
-                  icon: <BiCategoryAlt className="fs-4" />,
+                  icon: <ImBlog className="fs-4" />,
                   label: "Crear categorías",
                 },
                 {
@@ -94,7 +94,7 @@ const MainLayout = () => {
                 },
                 {
                   key: "color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
+                  icon: <ImBlog className="fs-4" />,
                   label: "Agregar colores",
                 },
                 {

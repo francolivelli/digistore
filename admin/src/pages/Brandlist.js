@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getBrands, resetState } from "../features/brands/brandSlice";
+import { deleteBrand, getBrands, resetState } from "../features/brands/brandSlice";
 import { Link } from "react-router-dom";
+import CustomModal from "../components/CustomModal";
 
 const columns = [
   {
@@ -23,10 +24,23 @@ const columns = [
 ];
 
 const Brandlist = () => {
+  const [open, setOpen] = useState(false);
+
+  const [brandId, setBrandId] = useState("");
+
+  const showModal = (e) => {
+    setOpen(true);
+    setBrandId(e);
+  };
+
+  const hideModal = () => {
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(resetState())
+    dispatch(resetState());
     dispatch(getBrands());
   }, [dispatch]);
 
@@ -45,13 +59,23 @@ const Brandlist = () => {
             to={`/admin/brand/${brandState[i]._id}`}>
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModal(brandState[i]._id)}>
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+
+  const handleDelete = (e) => {
+    setOpen(false);
+    dispatch(deleteBrand(e));
+    setTimeout(() => {
+      dispatch(getBrands());
+    }, 100);
+  };
 
   return (
     <div>
@@ -59,6 +83,14 @@ const Brandlist = () => {
       <div>
         <Table columns={columns} dataSource={data} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={open}
+        performAction={() => {
+          handleDelete(brandId);
+        }}
+        title="¿Estás seguro de que querés eliminar esta marca?"
+      />
     </div>
   );
 };

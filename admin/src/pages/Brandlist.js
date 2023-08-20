@@ -46,7 +46,8 @@ const Brandlist = () => {
   useEffect(() => {
     dispatch(resetState());
     dispatch(getBrands());
-  }, [dispatch]);
+    // eslint-disable-next-line
+  }, []);
 
   const brandState = useSelector((state) => state.brand.brands);
 

@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "../features/pcategories/pcategorySlice";
+import {
+  deleteCategory,
+  getCategories,
+  resetState,
+} from "../features/pcategories/pcategorySlice";
 import { Link } from "react-router-dom";
+import CustomModal from "../components/CustomModal";
 
 const columns = [
   {
@@ -25,7 +30,21 @@ const columns = [
 const Categorylist = () => {
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+
+  const [categoryId, setCategoryId] = useState("");
+
+  const showModal = (e) => {
+    setOpen(true);
+    setCategoryId(e);
+  };
+
+  const hideModal = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getCategories());
   }, [dispatch]);
 
@@ -39,17 +58,28 @@ const Categorylist = () => {
       title: pCategoryState[i].title,
       action: (
         <>
-          {" "}
-          <Link className="fs-3 text-danger" to="/">
+          <Link
+            className="fs-3 text-danger"
+            to={`/admin/category/${pCategoryState[i]._id}`}>
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModal(pCategoryState[i]._id)}>
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+
+  const handleDelete = (e) => {
+    setOpen(false);
+    dispatch(deleteCategory(e));
+    setTimeout(() => {
+      dispatch(getCategories());
+    }, 100);
+  };
 
   return (
     <div>
@@ -57,6 +87,14 @@ const Categorylist = () => {
       <div>
         <Table columns={columns} dataSource={data} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={open}
+        performAction={() => {
+          handleDelete(categoryId);
+        }}
+        title="¿Estás seguro de que querés eliminar esta marca?"
+      />
     </div>
   );
 };

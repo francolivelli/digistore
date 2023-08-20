@@ -6,8 +6,11 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import {
   createCategory,
+  getCategory,
   resetState,
+  updateCategory,
 } from "../features/pcategories/pcategorySlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá el nombre de la categoría"),
@@ -16,36 +19,72 @@ let schema = Yup.object().shape({
 const Addcat = () => {
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const categoryId = location.pathname.split("/")[3];
+
   const newCat = useSelector((state) => state.pCategory);
 
-  const { isSuccess, isError, isLoading, createdCategory } = newCat;
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdCategory,
+    categoryName,
+    updatedCategory,
+  } = newCat;
+
+  useEffect(() => {
+    if (categoryId !== undefined) {
+      dispatch(getCategory(categoryId));
+    } else {
+      dispatch(resetState());
+    }
+    // eslint-disable-next-line
+  }, [categoryId]);
 
   useEffect(() => {
     if (isSuccess && createdCategory) {
       toast.success("¡Categoría agregada!");
     }
+    if (isSuccess && updatedCategory) {
+      toast.success("¡Categoría editada!");
+      navigate("/admin/category-list");
+    }
     if (isError) {
       toast.error("Algo salió mal");
     }
-  }, [isSuccess, isError, isLoading, createdCategory]);
+    // eslint-disable-next-line
+  }, [isSuccess, isError, isLoading]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
+      title: categoryName || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createCategory(values));
-      formik.resetForm();
-      setTimeout(() => {
+      if (categoryId !== undefined) {
+        const data = { id: categoryId, categoryData: values };
+        dispatch(updateCategory(data));
         dispatch(resetState());
-      }, 3000);
+      } else {
+        dispatch(createCategory(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 300);
+      }
     },
   });
 
   return (
     <div>
-      <h3 className="mb-4 title">Crear categoría</h3>
+      <h3 className="mb-4 title">
+        {categoryId !== undefined ? "Editar" : "Agregar"} categoría
+      </h3>
       <div>
         <form
           action=""
@@ -66,7 +105,7 @@ const Addcat = () => {
             type="submit"
             className="btn btn-success border-0 rounded-3 my-4"
             style={{ width: "fit-content" }}>
-            Crear categoría
+            {categoryId !== undefined ? "Editar" : "Agregar"} categoría
           </button>
         </form>
       </div>

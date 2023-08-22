@@ -23,6 +23,18 @@ const getCoupons = asyncHandler(async (req, res) => {
   }
 });
 
+// GET COUPON
+const getCoupon = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  validateMongoDbId(id);
+  try {
+    const coupon = await Coupon.findById(id);
+    res.json(coupon);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // UPDATE COUPON
 const updateCoupon = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -49,4 +61,10 @@ const deleteCoupon = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { createCoupon, getCoupons, updateCoupon, deleteCoupon };
+module.exports = {
+  createCoupon,
+  getCoupons,
+  getCoupon,
+  updateCoupon,
+  deleteCoupon,
+};

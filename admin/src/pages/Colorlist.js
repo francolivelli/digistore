@@ -94,7 +94,7 @@ const Colorlist = () => {
         performAction={() => {
           handleDelete(colorId);
         }}
-        title="¿Estás seguro de que querés eliminar esta marca?"
+        title="¿Estás seguro de que querés eliminar este color?"
       />
     </div>
   );

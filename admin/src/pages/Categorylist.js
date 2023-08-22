@@ -94,7 +94,7 @@ const Categorylist = () => {
         performAction={() => {
           handleDelete(categoryId);
         }}
-        title="¿Estás seguro de que querés eliminar esta marca?"
+        title="¿Estás seguro de que querés eliminar esta categoría?"
       />
     </div>
   );

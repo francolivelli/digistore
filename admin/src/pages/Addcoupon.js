@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { createCoupon, resetState } from "../features/coupons/couponSlice";
+import {
+  createCoupon,
+  getCoupon,
+  resetState,
+  updateCoupon,
+} from "../features/coupons/couponSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   name: Yup.string().required("Ingresá el nombre del cupón"),
@@ -15,38 +21,84 @@ let schema = Yup.object().shape({
 const Addcoupon = () => {
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const couponId = location.pathname.split("/")[3];
+
   const newCoupon = useSelector((state) => state.coupon);
 
-  const { isSuccess, isError, isLoading, createdCoupon } = newCoupon;
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdCoupon,
+    couponName,
+    couponExpiry,
+    couponDiscount,
+    updatedCoupon,
+  } = newCoupon;
+
+  const changeDateFormat = (date) => {
+    const newDate = new Date(date);
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, "0"); // Asegura dos dígitos en el mes
+    const day = String(newDate.getDate()).padStart(2, "0"); // Asegura dos dígitos en el día
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    if (couponId !== undefined) {
+      dispatch(getCoupon(couponId));
+    } else {
+      dispatch(resetState());
+    }
+    // eslint-disable-next-line
+  }, [couponId]);
 
   useEffect(() => {
     if (isSuccess && createdCoupon) {
-      toast.success("Cupón creado!");
+      toast.success("¡Cupón creado!");
+    }
+    if (isSuccess && updatedCoupon) {
+      toast.success("¡Cupón editado!");
+      navigate("/admin/coupon-list");
     }
     if (isError) {
       toast.error("Algo salió mal");
     }
-  }, [isSuccess, isError, isLoading, createdCoupon]);
+    // eslint-disable-next-line
+  }, [isSuccess, isError, isLoading]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: "",
-      expiry: "",
-      discount: "",
+      name: couponName || "",
+      expiry: changeDateFormat(couponExpiry) || "",
+      discount: couponDiscount || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createCoupon(values));
-      formik.resetForm();
-      setTimeout(() => {
+      if (couponId !== undefined) {
+        const data = { id: couponId, couponData: values };
+        dispatch(updateCoupon(data));
         dispatch(resetState());
-      }, 3000);
+      } else {
+        dispatch(createCoupon(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 300);
+      }
     },
   });
 
   return (
     <div>
-      <h3 className="mb-4 title">Agregar cupón</h3>
+      <h3 className="mb-4 title">
+        {couponId !== undefined ? "Editar" : "Agregar"} cupón
+      </h3>
       <div>
         <form
           action=""
@@ -92,7 +144,7 @@ const Addcoupon = () => {
             type="submit"
             className="btn btn-success border-0 rounded-3 my-4"
             style={{ width: "fit-content" }}>
-            Agregar cupón
+            {couponId !== undefined ? "Editar" : "Agregar"} cupón
           </button>
         </form>
       </div>

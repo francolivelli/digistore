@@ -6,7 +6,7 @@ export const getCategories = createAsyncThunk(
   "product-category/get-categories",
   async (thunkAPI) => {
     try {
-      return await pCategoryService.getProductCategories();
+      return await pCategoryService.getCategories();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

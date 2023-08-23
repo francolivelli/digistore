@@ -2,7 +2,7 @@ import axios from "axios";
 import { config } from "../../utils/axiosconfig";
 import { base_url } from "../../utils/base_url";
 
-const getProductCategories = async () => {
+const getCategories = async () => {
   const response = await axios.get(`${base_url}categories/`);
 
   return response.data;
@@ -37,7 +37,7 @@ const deleteCategory = async (id) => {
 };
 
 const categoryService = {
-  getProductCategories,
+  getCategories,
   createCategory,
   getCategory,
   updateCategory,

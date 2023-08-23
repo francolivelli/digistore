@@ -39,8 +39,7 @@ const Addblog = () => {
   const imgState = useSelector((state) => state.upload.images);
   const bCatState = useSelector((state) => state.bCategory.bCategories);
 
-  const [localImages, setLocalImages] = useState([]);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [showImg, setShowImg] = useState(true);
 
   const newBlog = useSelector((state) => state.blog);
 
@@ -58,19 +57,13 @@ const Addblog = () => {
 
   useEffect(() => {
     if (blogId !== undefined) {
-      dispatch(getBlog(blogId));
+      dispatch(getBlog(blogId))
+      console.log(blogImages)
     } else {
       dispatch(resetState());
     }
     // eslint-disable-next-line
   }, [blogId]);
-
-  useEffect(() => {
-    if (blogImages && !imagesLoaded) {
-      setLocalImages(blogImages);
-      setImagesLoaded(true);
-    }
-  }, [blogImages, imagesLoaded]);
 
   useEffect(() => {
     dispatch(resetState());
@@ -107,7 +100,7 @@ const Addblog = () => {
       title: blogName || "",
       description: blogDescription || "",
       category: blogCategory || "",
-      images: blogImages || "",
+      images: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -178,12 +171,12 @@ const Addblog = () => {
           <div className="error">
             {formik.touched.description && formik.errors.description}
           </div>
-          <div className="bg-white border-1 text-center rounded-3">
+          <div
+            className="bg-white border-1 text-center rounded-3"
+            onClick={() => setShowImg(false)}>
             <Dropzone
               onDrop={(acceptedFiles) => {
-                dispatch(uploadImg(acceptedFiles)).then(() => {
-                  setLocalImages(acceptedFiles);
-                })
+                dispatch(uploadImg(acceptedFiles));
               }}>
               {({ getRootProps, getInputProps }) => (
                 <section>
@@ -207,14 +200,30 @@ const Addblog = () => {
             </Dropzone>
           </div>
           <div className="show-images d-flex flex-wrap mt-3 gap-3">
-            {localImages?.map((i, j) => {
+            {showImg && blogImages
+              ? blogImages.map((i, j) => {
+                  return (
+                    <div className="position-relative" key={j}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowImg(false);
+                          dispatch(delImg(i.public_id))
+                        }}
+                        className="btn-close position-absolute"
+                        style={{ top: "10px", right: "10px" }}></button>
+                      <img src={i.url} alt="" height={200} width="auto" />
+                    </div>
+                  );
+                })
+              : null}
+            {imgState?.map((i, j) => {
               return (
                 <div className="position-relative" key={j}>
                   <button
                     type="button"
                     onClick={() => {
                       dispatch(delImg(i.public_id));
-                      setLocalImages([]);
                     }}
                     className="btn-close position-absolute"
                     style={{ top: "10px", right: "10px" }}></button>

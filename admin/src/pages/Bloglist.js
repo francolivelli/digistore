@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getBlogs } from "../features/blogs/blogSlice";
+import { deleteBlog, getBlogs, resetState } from "../features/blogs/blogSlice";
+import CustomModal from "../components/CustomModal";
 
 const columns = [
   {
@@ -28,11 +29,26 @@ const columns = [
 ];
 
 const Bloglist = () => {
+  const [open, setOpen] = useState(false);
+
+  const [blogId, setBlogId] = useState("");
+
+  const showModal = (e) => {
+    setOpen(true);
+    setBlogId(e);
+  };
+
+  const hideModal = () => {
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getBlogs());
-  }, [dispatch]);
+    // eslint-disable-next-line
+  }, []);
 
   const blogState = useSelector((state) => state.blog.blogs);
 
@@ -45,17 +61,28 @@ const Bloglist = () => {
       category: blogState[i].category,
       action: (
         <>
-          {" "}
-          <Link className="fs-3 text-danger" to="/">
+          <Link
+            className="fs-3 text-danger"
+            to={`/admin/blog/${blogState[i]._id}`}>
             <BiEdit />
           </Link>
-          <Link className="ms-3 fs-3 text-danger" to="/">
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModal(blogState[i]._id)}>
             <AiFillDelete />
-          </Link>
+          </button>
         </>
       ),
     });
   }
+
+  const handleDelete = (e) => {
+    setOpen(false);
+    dispatch(deleteBlog(e));
+    setTimeout(() => {
+      dispatch(getBlogs());
+    }, 100);
+  };
 
   return (
     <div>
@@ -63,6 +90,14 @@ const Bloglist = () => {
       <div>
         <Table columns={columns} dataSource={data} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={open}
+        performAction={() => {
+          handleDelete(blogId);
+        }}
+        title="¿Estás seguro de que querés eliminar este blog?"
+      />
     </div>
   );
 };

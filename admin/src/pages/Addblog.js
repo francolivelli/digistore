@@ -3,13 +3,23 @@ import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Dropzone from "react-dropzone";
-import { delImg, uploadImg } from "../features/upload/uploadSlice";
+import {
+  delImg,
+  resetImgState,
+  uploadImg,
+} from "../features/upload/uploadSlice";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getBlogCategories } from "../features/bcategories/bcategorySlice";
-import { createBlog, resetState } from "../features/blogs/blogSlice";
+import {
+  createBlog,
+  getBlog,
+  resetState,
+  updateBlog,
+} from "../features/blogs/blogSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá un título para el blog"),
@@ -20,25 +30,58 @@ let schema = Yup.object().shape({
 const Addblog = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getBlogCategories());
-    // eslint-disable-next-line
-  }, []);
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const blogId = location.pathname.split("/")[3];
 
   const imgState = useSelector((state) => state.upload.images);
   const bCatState = useSelector((state) => state.bCategory.bCategories);
+
   const newBlog = useSelector((state) => state.blog);
 
-  const { isSuccess, isError, isLoading, createdBlog } = newBlog;
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdBlog,
+    updatedBlog,
+    blogName,
+    blogDescription,
+    blogCategory,
+    blogImages,
+  } = newBlog;
+
+  useEffect(() => {
+    if (blogId !== undefined) {
+      dispatch(getBlog(blogId));
+      img.push(blogImages);
+    } else {
+      dispatch(resetState());
+    }
+    // eslint-disable-next-line
+  }, [blogId]);
+
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(getBlogCategories());
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (isSuccess && createdBlog) {
       toast.success("Blog creado!");
     }
+    if (isSuccess && updatedBlog) {
+      toast.success("¡Blog editado!");
+      navigate("/admin/blog-list");
+    }
     if (isError) {
       toast.error("Algo salió mal");
     }
-  }, [isSuccess, isError, isLoading, createdBlog]);
+    // eslint-disable-next-line
+  }, [isSuccess, isError, isLoading]);
 
   const img = [];
 
@@ -46,31 +89,41 @@ const Addblog = () => {
     img.push({ public_id: i.public_id, url: i.url });
   });
 
+  useEffect(() => {
+    formik.values.images = img;
+    // eslint-disable-next-line
+  }, [blogImages]);
+
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
-      description: "",
-      category: "",
+      title: blogName || "",
+      description: blogDescription || "",
+      category: blogCategory || "",
       images: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createBlog(values));
-      formik.resetForm();
-      setTimeout(() => {
-        dispatch(resetState())
-      }, 3000);
+      if (blogId !== undefined) {
+        const data = { id: blogId, blogData: values };
+        dispatch(updateBlog(data));
+        dispatch(resetState());
+      } else {
+        dispatch(createBlog(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+          dispatch(resetImgState());
+        }, 300);
+      }
     },
   });
 
-  useEffect(() => {
-    formik.values.images = img;
-    // eslint-disable-next-line
-  }, [img]);
-
   return (
     <div>
-      <h3 className="mb-4 title">Crear blog</h3>
+      <h3 className="mb-4 title">
+        {blogId !== undefined ? "Editar" : "Agregar"} blog
+      </h3>
       <div>
         <form
           action=""
@@ -118,15 +171,23 @@ const Addblog = () => {
           <div className="error">
             {formik.touched.description && formik.errors.description}
           </div>
-          <div className="bg-white border-1 p-5 text-center">
+          <div className="bg-white border-1 text-center rounded-3">
             <Dropzone
               onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
               {({ getRootProps, getInputProps }) => (
                 <section>
-                  <div {...getRootProps()}>
+                  <div
+                    {...getRootProps()}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100px",
+                      cursor: "pointer",
+                    }}>
                     <input {...getInputProps()} />
                     <p className="mb-0">
-                      Drag 'n' drop some files here, or click to select files
+                    Arrastrá los archivos aquí, o hacé click para seleccionarlos
                     </p>
                   </div>
                 </section>
@@ -149,9 +210,9 @@ const Addblog = () => {
           </div>
           <button
             type="submit"
-            className="btn btn-success border-0 rounded-3 my-4"
+            className="btn btn-success border-0 rounded-3 my-3"
             style={{ width: "fit-content" }}>
-            Crear blog
+            {blogId !== undefined ? "Editar" : "Agregar"} blog
           </button>
         </form>
       </div>

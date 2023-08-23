@@ -231,15 +231,21 @@ const Addproduct = () => {
           <div className="error">
             {formik.touched.quantity && formik.errors.quantity}
           </div>
-          <div className="bg-white border-1 p-5 text-center">
+          <div className="bg-white border-1 text-center rounded-3">
             <Dropzone
               onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
               {({ getRootProps, getInputProps }) => (
                 <section>
-                  <div {...getRootProps()}>
+                  <div {...getRootProps()} style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "100px",
+                      cursor: "pointer",
+                    }}>
                     <input {...getInputProps()} />
                     <p className="mb-0">
-                      Drag 'n' drop some files here, or click to select files
+                      Arrastrá los archivos aquí, o hacé click para seleccionarlos
                     </p>
                   </div>
                 </section>
@@ -262,7 +268,7 @@ const Addproduct = () => {
           </div>
           <button
             type="submit"
-            className="btn btn-success border-0 rounded-3 my-4"
+            className="btn btn-success border-0 rounded-3 my-3"
             style={{ width: "fit-content" }}>
             Agregar producto
           </button>

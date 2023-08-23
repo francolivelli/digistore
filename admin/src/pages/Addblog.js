@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInput from "../components/CustomInput";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -39,6 +39,9 @@ const Addblog = () => {
   const imgState = useSelector((state) => state.upload.images);
   const bCatState = useSelector((state) => state.bCategory.bCategories);
 
+  const [localImages, setLocalImages] = useState([]);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
   const newBlog = useSelector((state) => state.blog);
 
   const {
@@ -56,12 +59,18 @@ const Addblog = () => {
   useEffect(() => {
     if (blogId !== undefined) {
       dispatch(getBlog(blogId));
-      img.push(blogImages);
     } else {
       dispatch(resetState());
     }
     // eslint-disable-next-line
   }, [blogId]);
+
+  useEffect(() => {
+    if (blogImages && !imagesLoaded) {
+      setLocalImages(blogImages);
+      setImagesLoaded(true);
+    }
+  }, [blogImages, imagesLoaded]);
 
   useEffect(() => {
     dispatch(resetState());
@@ -83,16 +92,14 @@ const Addblog = () => {
     // eslint-disable-next-line
   }, [isSuccess, isError, isLoading]);
 
-  const img = [];
-
-  imgState.forEach((i) => {
-    img.push({ public_id: i.public_id, url: i.url });
-  });
-
   useEffect(() => {
-    formik.values.images = img;
+    const updatedImages = imgState.map((i) => ({
+      public_id: i.public_id,
+      url: i.url,
+    }));
+    formik.setFieldValue("images", updatedImages);
     // eslint-disable-next-line
-  }, [blogImages]);
+  }, [imgState]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -100,7 +107,7 @@ const Addblog = () => {
       title: blogName || "",
       description: blogDescription || "",
       category: blogCategory || "",
-      images: "",
+      images: blogImages || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -173,7 +180,11 @@ const Addblog = () => {
           </div>
           <div className="bg-white border-1 text-center rounded-3">
             <Dropzone
-              onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
+              onDrop={(acceptedFiles) => {
+                dispatch(uploadImg(acceptedFiles)).then(() => {
+                  setLocalImages(acceptedFiles);
+                })
+              }}>
               {({ getRootProps, getInputProps }) => (
                 <section>
                   <div
@@ -187,7 +198,8 @@ const Addblog = () => {
                     }}>
                     <input {...getInputProps()} />
                     <p className="mb-0">
-                    Arrastrá los archivos aquí, o hacé click para seleccionarlos
+                      Arrastrá los archivos aquí, o hacé click para
+                      seleccionarlos
                     </p>
                   </div>
                 </section>
@@ -195,12 +207,15 @@ const Addblog = () => {
             </Dropzone>
           </div>
           <div className="show-images d-flex flex-wrap mt-3 gap-3">
-            {imgState?.map((i, j) => {
+            {localImages?.map((i, j) => {
               return (
                 <div className="position-relative" key={j}>
                   <button
                     type="button"
-                    onClick={() => dispatch(delImg(i.public_id))}
+                    onClick={() => {
+                      dispatch(delImg(i.public_id));
+                      setLocalImages([]);
+                    }}
                     className="btn-close position-absolute"
                     style={{ top: "10px", right: "10px" }}></button>
                   <img src={i.url} alt="" height={200} width="auto" />

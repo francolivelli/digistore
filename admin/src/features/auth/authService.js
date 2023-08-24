@@ -16,9 +16,20 @@ const getOrders = async () => {
   return response.data;
 };
 
+const getOrder = async (id) => {
+  const response = await axios.post(
+    `${base_url}users/get-order-by-user/${id}`,
+    "",
+    config
+  );
+
+  return response.data;
+};
+
 const authService = {
   login,
   getOrders,
+  getOrder,
 };
 
 export default authService;

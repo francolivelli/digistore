@@ -488,6 +488,22 @@ const getAllOrders = asyncHandler(async (req, res) => {
   }
 });
 
+// GET ORDER BY USER ID
+const getOrderByUserId = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(id)
+  validateMongoDbId(id);
+  try {
+    const orders = await Order.findOne({ orderby: id })
+      .populate("products.product")
+      .populate("orderby")
+      .exec();
+    res.json(orders);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // UPDATE ORDER STATUS
 const updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
@@ -534,5 +550,6 @@ module.exports = {
   createOrder,
   getOrders,
   getAllOrders,
+  getOrderByUserId,
   updateOrderStatus
 };

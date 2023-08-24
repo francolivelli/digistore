@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getEnquiries } from "../features/enquiries/enquirySlice";
+import {
+  deleteEnquiry,
+  getEnquiries,
+  resetState,
+  updateEnquiry,
+} from "../features/enquiries/enquirySlice";
+import CustomModal from "../components/CustomModal";
 
 const columns = [
   {
@@ -34,9 +40,23 @@ const columns = [
 ];
 
 const Enquiries = () => {
+  const [open, setOpen] = useState(false);
+
+  const [enquiryId, setEnquiryId] = useState("");
+
+  const showModal = (e) => {
+    setOpen(true);
+    setEnquiryId(e);
+  };
+
+  const hideModal = () => {
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getEnquiries());
   }, [dispatch]);
 
@@ -52,20 +72,51 @@ const Enquiries = () => {
       mobile: enquiryState[i].mobile,
       status: (
         <>
-          <select name="" className="form-control form-select" id="">
-            <option value="">Cambiar estado</option>
+          <select
+            name=""
+            defaultValue={
+              enquiryState[i].status ? enquiryState[i].status : "Enviado"
+            }
+            className="form-control form-select custom-select"
+            onChange={(e) =>
+              setEnquiryStatus(e.target.value, enquiryState[i]._id)
+            }>
+            <option value="Enviado">Enviado</option>
+            <option value="Contactado">Contactado</option>
+            <option value="En progreso">En progreso</option>
+            <option value="Resuelto">Resuelto</option>
           </select>
         </>
       ),
       action: (
         <>
-          <Link className="ms-3 fs-3 text-danger" to="/">
-            <AiFillDelete />
+          <Link
+            className="ms-3 fs-3 text-danger"
+            to={`/admin/enquiries/${enquiryState[i]._id}`}>
+            <AiOutlineEye />
           </Link>
+          <button
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModal(enquiryState[i]._id)}>
+            <AiFillDelete />
+          </button>
         </>
       ),
     });
   }
+
+  const setEnquiryStatus = (e, i) => {
+    const data = { id: i, enquiryData: e };
+    dispatch(updateEnquiry(data));
+  };
+
+  const handleDelete = (e) => {
+    setOpen(false);
+    dispatch(deleteEnquiry(e));
+    setTimeout(() => {
+      dispatch(getEnquiries());
+    }, 100);
+  };
 
   return (
     <div>
@@ -73,6 +124,14 @@ const Enquiries = () => {
       <div>
         <Table columns={columns} dataSource={data} />
       </div>
+      <CustomModal
+        hideModal={hideModal}
+        open={open}
+        performAction={() => {
+          handleDelete(enquiryId);
+        }}
+        title="¿Estás seguro de que querés eliminar esta consulta?"
+      />
     </div>
   );
 };

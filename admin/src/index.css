@@ -81,8 +81,14 @@ main::-webkit-scrollbar {
   margin-left: 15px;
 }
 
-.ant-select{
-  cursor: default
+.custom-select {
+  padding: 1px !important;
+  padding-left: 8px !important;
+  width: 150px;
+}
+
+.ant-select {
+  cursor: default;
 }
 
 .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -100,14 +106,17 @@ main::-webkit-scrollbar {
   padding: 0;
 }
 
-.ant-select-focused:where(.css-dev-only-do-not-override-1m62vyb).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector{
+.ant-select-focused:where(.css-dev-only-do-not-override-1m62vyb).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
   border-color: transparent;
   box-shadow: none;
 }
 
-.ant-select-multiple .ant-select-selection-item{
-margin-inline-start: 12px;
-margin-inline-end: 0;
+.ant-select-multiple .ant-select-selection-item {
+  margin-inline-start: 12px;
+  margin-inline-end: 0;
 }
 
 .input-top {

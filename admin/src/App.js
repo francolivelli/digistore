@@ -6,6 +6,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import MainLayout from "./components/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Enquiries from "./pages/Enquiries";
+import ViewEnquiries from "./pages/ViewEnquiries";
 import Bloglist from "./pages/Bloglist";
 import Blogcatlist from "./pages/Blogcatlist";
 import Orders from "./pages/Orders";
@@ -33,6 +34,7 @@ function App() {
         <Route path="/admin" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="enquiries" element={<Enquiries />} />
+          <Route path="enquiries/:id" element={<ViewEnquiries />} />
           <Route path="blog" element={<Addblog />} />
           <Route path="blog-list" element={<Bloglist />} />
           <Route path="blog/:id" element={<Addblog />} />

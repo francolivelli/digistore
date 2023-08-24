@@ -57,8 +57,7 @@ const Addblog = () => {
 
   useEffect(() => {
     if (blogId !== undefined) {
-      dispatch(getBlog(blogId))
-      console.log(blogImages)
+      dispatch(getBlog(blogId));
     } else {
       dispatch(resetState());
     }
@@ -208,7 +207,7 @@ const Addblog = () => {
                         type="button"
                         onClick={() => {
                           setShowImg(false);
-                          dispatch(delImg(i.public_id))
+                          dispatch(delImg(i.public_id));
                         }}
                         className="btn-close position-absolute"
                         style={{ top: "10px", right: "10px" }}></button>

@@ -10,9 +10,10 @@ import { getCategories } from "../features/pcategories/pcategorySlice";
 import { getColors } from "../features/colors/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
-import { delImg, uploadImg } from "../features/upload/uploadSlice";
-import { createProduct, resetState } from "../features/products/productSlice";
+import { delImg, resetImgState, uploadImg } from "../features/upload/uploadSlice";
+import { createProduct, getProduct, resetState, updateProduct } from "../features/products/productSlice";
 import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("Ingresá un nombre para el producto"),
@@ -30,7 +31,48 @@ let schema = Yup.object().shape({
 const Addproduct = () => {
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const productId = location.pathname.split("/")[3];
+
+  const brandState = useSelector((state) => state.brand.brands);
+  const categoryState = useSelector((state) => state.pCategory.pCategories);
+  const colorState = useSelector((state) => state.color.colors);
+  const imgState = useSelector((state) => state.upload.images);
+
   const [color, setColor] = useState([]);
+
+  const [showImg, setShowImg] = useState(true);
+
+  const newProduct = useSelector((state) => state.product);
+
+  const {
+    isSuccess,
+    isError,
+    isLoading,
+    createdProduct,
+    updatedProduct,
+    productName,
+    productDescription,
+    productPrice,
+    productCategory,
+    productBrand,
+    productQuantity,
+    productImages,
+    productColor,
+    productTags,
+  } = newProduct;
+
+  useEffect(() => {
+    if (productId !== undefined) {
+      dispatch(getProduct(productId));
+    } else {
+      dispatch(resetState());
+    }
+    // eslint-disable-next-line
+  }, [productId]);
 
   useEffect(() => {
     dispatch(getBrands());
@@ -39,25 +81,30 @@ const Addproduct = () => {
     // eslint-disable-next-line
   }, []);
 
-  const brandState = useSelector((state) => state.brand.brands);
-  const categoryState = useSelector((state) => state.pCategory.pCategories);
-  const colorState = useSelector((state) => state.color.colors);
-  const imgState = useSelector((state) => state.upload.images);
-  const newProduct = useSelector((state) => state.product);
-
-  const { isSuccess, isError, isLoading, createdProduct } = newProduct;
-
   useEffect(() => {
     if (isSuccess && createdProduct) {
       toast.success("¡Producto agregado!");
     }
+    if (isSuccess && updatedProduct) {
+      toast.success("¡Producto editado!");
+      navigate("/admin/product-list");
+    }
     if (isError) {
       toast.error("Algo salió mal");
     }
-  }, [isSuccess, isError, isLoading, createdProduct]);
+    // eslint-disable-next-line
+  }, [isSuccess, isError, isLoading]);
+
+  useEffect(() => {
+    const updatedImages = imgState.map((i) => ({
+      public_id: i.public_id,
+      url: i.url,
+    }));
+    formik.setFieldValue("images", updatedImages);
+    // eslint-disable-next-line
+  }, [imgState]);
 
   const coloropt = [];
-  const img = [];
 
   colorState.forEach((i) => {
     coloropt.push({
@@ -66,46 +113,48 @@ const Addproduct = () => {
     });
   });
 
-  imgState.forEach((i) => {
-    img.push({ public_id: i.public_id, url: i.url });
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: "",
-      price: "",
-      brand: "",
-      category: "",
-      tags: "",
-      color: "",
-      quantity: "",
-      images: "",
-    },
-    validationSchema: schema,
-    onSubmit: (values) => {
-      dispatch(createProduct(values));
-      formik.resetForm();
-      setColor(null);
-      setTimeout(() => {
-        dispatch(resetState())
-      }, 3000);
-    },
-  });
-
   useEffect(() => {
     formik.values.color = color ? color : " ";
-    formik.values.images = img;
     // eslint-disable-next-line
-  }, [color, img]);
+  }, [color]);
 
   const handleColors = (e) => {
     setColor(e);
   };
 
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      title: productName || "",
+      description: productDescription || "",
+      price: productPrice || "",
+      brand: productBrand || "",
+      category: productCategory || "",
+      tags: productTags || "",
+      color: productColor || "",
+      quantity: productQuantity || "",
+      images: "",
+    },
+    validationSchema: schema,
+    onSubmit: (values) => {
+      if (productId !== undefined) {
+        const data = { id: productId, productData: values };
+        dispatch(updateProduct(data));
+        dispatch(resetState());
+      } else {
+        dispatch(createProduct(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+          dispatch(resetImgState());
+        }, 300);
+      }
+    },
+  });
+
   return (
     <div>
-      <h3 className="mb-4 title">Agregar producto</h3>
+      <h3 className="mb-4 title">{productId !== undefined ? "Editar" : "Agregar"} producto</h3>
       <div>
         <form
           onSubmit={formik.handleSubmit}
@@ -236,7 +285,9 @@ const Addproduct = () => {
               onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}>
               {({ getRootProps, getInputProps }) => (
                 <section>
-                  <div {...getRootProps()} style={{
+                  <div
+                    {...getRootProps()}
+                    style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -245,7 +296,8 @@ const Addproduct = () => {
                     }}>
                     <input {...getInputProps()} />
                     <p className="mb-0">
-                      Arrastrá los archivos aquí, o hacé click para seleccionarlos
+                      Arrastrá los archivos aquí, o hacé click para
+                      seleccionarlos
                     </p>
                   </div>
                 </section>
@@ -253,6 +305,23 @@ const Addproduct = () => {
             </Dropzone>
           </div>
           <div className="show-images d-flex flex-wrap mt-3 gap-3">
+          {showImg && productImages
+              ? productImages.map((i, j) => {
+                  return (
+                    <div className="position-relative" key={j}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowImg(false);
+                          dispatch(delImg(i.public_id));
+                        }}
+                        className="btn-close position-absolute"
+                        style={{ top: "10px", right: "10px" }}></button>
+                      <img src={i.url} alt="" height={200} width="auto" />
+                    </div>
+                  );
+                })
+              : null}
             {imgState?.map((i, j) => {
               return (
                 <div className="position-relative" key={j}>
@@ -270,7 +339,7 @@ const Addproduct = () => {
             type="submit"
             className="btn btn-success border-0 rounded-3 my-3"
             style={{ width: "fit-content" }}>
-            Agregar producto
+            {productId !== undefined ? "Editar" : "Agregar"} producto
           </button>
         </form>
       </div>
